@@ -17,7 +17,7 @@ This project aims to bring common checks into one repeatable workflow.
 
 ## Planned Features
 
-- [ ] Collect Windows version and build information
+- [x] Collect Windows version and build information
 - [ ] Calculate system uptime
 - [ ] Check available disk space
 - [ ] Collect network and DNS configuration
