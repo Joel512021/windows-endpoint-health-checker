@@ -23,7 +23,7 @@ This project aims to bring common checks into one repeatable workflow.
 - [ ] Collect network and DNS configuration
 - [ ] Check selected Windows services
 - [x] Export an HTML report
-- [ ] Export structured JSON results
+- [x] Export structured JSON results
 - [ ] Add automated tests and sample output
 
 ## Design Goals
@@ -82,7 +82,7 @@ and open it in a browser.
 | HTML export | Report created and opens in browser | Pending |
 | Custom threshold of 99% | Drives below 99% free show WARNING | Pending |
 | Default threshold | Warning threshold returns to 15% | Pending |
-
+| JSON export | File parses successfully and matches collected results | Passed |
 
 ## Roadmap
 
