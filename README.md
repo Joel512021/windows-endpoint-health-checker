@@ -22,7 +22,7 @@ This project aims to bring common checks into one repeatable workflow.
 - [ ] Check available disk space
 - [ ] Collect network and DNS configuration
 - [ ] Check selected Windows services
-- [ ] Export an HTML report
+- [x] Export an HTML report
 - [ ] Export structured JSON results
 - [ ] Add automated tests and sample output
 
