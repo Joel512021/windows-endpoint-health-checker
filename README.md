@@ -60,6 +60,16 @@ It is not a vulnerability scanner or a security compliance assessment.
 Generated reports may contain device and network information.
 Review and sanitize reports before sharing them.
 
+## Manual Testing
+
+| Test | Expected Result | Actual Result |
+|------|-----------------|---------------|
+| Default run | System and disk information displayed | Pending |
+| HTML export | Report created and opens in browser | Pending |
+| Custom threshold of 99% | Drives below 99% free show WARNING | Pending |
+| Default threshold | Warning threshold returns to 15% | Pending |
+
+
 ## Roadmap
 
 1. Implement basic system and disk checks.
