@@ -60,6 +60,20 @@ It is not a vulnerability scanner or a security compliance assessment.
 Generated reports may contain device and network information.
 Review and sanitize reports before sharing them.
 
+## Sample Report
+
+The tool generates an HTML report containing Windows system
+information and disk-space results.
+
+The example below has been reviewed for public sharing.
+
+![Sample endpoint health report](examples/sample-report.png)
+
+[View the sample HTML source](examples/sample-report.html)
+
+To view the HTML report as a webpage, download the sample file
+and open it in a browser.
+
 ## Manual Testing
 
 | Test | Expected Result | Actual Result |
