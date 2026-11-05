@@ -1,1 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Windows Endpoint Health Report</title>
+    <style>
+        body {
+            font-family: Segoe UI, Arial, sans-serif;
+            background: #f3f6fa;
+            color: #243247;
+            margin: 0;
+            padding: 24px;
+        }
 
+        main {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 { color: #123b63; }
+
+        section {
+            background: white;
+            padding: 24px;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dce3eb;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #123b63;
+            color: white;
+        }
+
+        tr:nth-child(even) { background: #f6f8fb; }
+
+        .ok {
+            background: #dcfce7;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .warning {
+            background: #fef3c7;
+            color: #92400e;
+            font-weight: bold;
+        }
+
+        .unknown {
+            background: #e5e7eb;
+            color: #374151;
+            font-weight: bold;
+        }
+
+        .note {
+            color: #526174;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Windows Endpoint Health Report</h1>
+<p>
+    Demonstration report for portfolio purposes.
+    Device details have been reviewed for public sharing.
+</p>
+    <p class="note">Generated: 2026-11-04 18:45:34</p>
+
+    <section>
+        <h2>System Information</h2>
+        <table>
+<tr><td>OperatingSystem:</td><td>Microsoft Windows 11 Home</td></tr>
+<tr><td>Version:</td><td>10.0.26300</td></tr>
+<tr><td>Build:</td><td>26300</td></tr>
+<tr><td>LastBoot:</td><td>11/1/2026 9:58:11 PM</td></tr>
+<tr><td>Uptime:</td><td>2 days, 20 hours, 47 minutes</td></tr>
+<tr><td>PowerShellVersion:</td><td>5.1.26100.9818</td></tr>
+</table>
+    </section>
+
+    <section>
+        <h2>Disk Space</h2>
+        <p>Warning threshold: below 15% free.</p>
+        <table>
+<colgroup><col/><col/><col/><col/><col/></colgroup>
+<tr><th>Drive</th><th>TotalGB</th><th>FreeGB</th><th>FreePercent</th><th>Status</th></tr>
+<tr><td>C:</td><td>456.62</td><td>161.77</td><td>35.4</td><td class="ok">OK</td></tr>
+</table>
+    </section>
+
+    <p class="note">
+        OK means a drive meets the configured free-space threshold.
+        It does not indicate overall system health or security.
+        Review this report before sharing device information.
+    </p>
+</main>
+</body>
+</html>
