@@ -272,3 +272,36 @@ try {
 catch {
     Write-Warning "Report export or opening failed: $($_.Exception.Message)"
 }
+
+# Export diagnostic results as JSON.
+try {
+    $jsonFolder = Join-Path `
+        (Split-Path -Parent $PSScriptRoot) "reports"
+
+    New-Item -ItemType Directory -Path $jsonFolder `
+        -Force -ErrorAction Stop | Out-Null
+
+    $jsonTimestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss-fff"
+
+    $jsonPath = Join-Path $jsonFolder `
+        "EndpointHealth-$jsonTimestamp.json"
+
+    $reportData = [PSCustomObject]@{
+        SchemaVersion      = "1.0"
+        GeneratedAt        = (Get-Date).ToString("o")
+        MinimumFreePercent = $MinimumFreePercent
+        SystemInformation  = $systemInfo
+        DiskResults        = @($diskResults)
+    }
+
+    $reportData |
+        ConvertTo-Json -Depth 6 |
+        Set-Content -LiteralPath $jsonPath `
+            -Encoding UTF8 -ErrorAction Stop
+
+    Write-Host "`nJSON report saved:" -ForegroundColor Green
+    Write-Host $jsonPath
+}
+catch {
+    Write-Warning "JSON export failed: $($_.Exception.Message)"
+}
