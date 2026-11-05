@@ -109,3 +109,166 @@ catch {
 }
 
 Write-Host "`nChecks finished. Review any warnings above."
+
+# Build and save an HTML report.
+try {
+    $projectRoot = Split-Path -Parent $PSScriptRoot
+    $reportFolder = Join-Path $projectRoot "reports"
+
+    New-Item -ItemType Directory -Path $reportFolder `
+        -Force -ErrorAction Stop | Out-Null
+
+    $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss-fff"
+    $reportPath = Join-Path $reportFolder `
+        "EndpointHealth-$timestamp.html"
+
+    $generatedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+
+    if ($null -ne $systemInfo) {
+        $systemHtml = (
+            $systemInfo |
+                ConvertTo-Html -Fragment -As List
+        ) -join "`n"
+    }
+    else {
+        $systemHtml = "<p>System information could not be collected.</p>"
+    }
+
+    if ($diskResults.Count -gt 0) {
+        $diskHtml = (
+            $diskResults |
+                Select-Object Drive, TotalGB, FreeGB,
+                    FreePercent, Status |
+                ConvertTo-Html -Fragment
+        ) -join "`n"
+
+        $diskHtml = $diskHtml.Replace(
+            "<td>WARNING</td>",
+            '<td class="warning">WARNING</td>'
+        )
+
+        $diskHtml = $diskHtml.Replace(
+            "<td>OK</td>",
+            '<td class="ok">OK</td>'
+        )
+
+        $diskHtml = $diskHtml.Replace(
+            "<td>UNKNOWN</td>",
+            '<td class="unknown">UNKNOWN</td>'
+        )
+    }
+    else {
+        $diskHtml = "<p>No disk-space results are available.</p>"
+    }
+
+    $reportHtml = @"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Windows Endpoint Health Report</title>
+    <style>
+        body {
+            font-family: Segoe UI, Arial, sans-serif;
+            background: #f3f6fa;
+            color: #243247;
+            margin: 0;
+            padding: 24px;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 { color: #123b63; }
+
+        section {
+            background: white;
+            padding: 24px;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dce3eb;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #123b63;
+            color: white;
+        }
+
+        tr:nth-child(even) { background: #f6f8fb; }
+
+        .ok {
+            background: #dcfce7;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .warning {
+            background: #fef3c7;
+            color: #92400e;
+            font-weight: bold;
+        }
+
+        .unknown {
+            background: #e5e7eb;
+            color: #374151;
+            font-weight: bold;
+        }
+
+        .note {
+            color: #526174;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Windows Endpoint Health Report</h1>
+    <p class="note">Generated: $generatedAt</p>
+
+    <section>
+        <h2>System Information</h2>
+        $systemHtml
+    </section>
+
+    <section>
+        <h2>Disk Space</h2>
+        <p>Warning threshold: below $MinimumFreePercent% free.</p>
+        $diskHtml
+    </section>
+
+    <p class="note">
+        OK means a drive meets the configured free-space threshold.
+        It does not indicate overall system health or security.
+        Review this report before sharing device information.
+    </p>
+</main>
+</body>
+</html>
+"@
+
+    Set-Content -LiteralPath $reportPath `
+        -Value $reportHtml -Encoding UTF8 -ErrorAction Stop
+
+    Write-Host "`nHTML report saved:" -ForegroundColor Green
+    Write-Host $reportPath
+
+    Invoke-Item -LiteralPath $reportPath -ErrorAction Stop
+}
+catch {
+    Write-Warning "Report export or opening failed: $($_.Exception.Message)"
+}
